@@ -1,18 +1,35 @@
+import mysql from 'mysql2/promise'
 import { getSetupConnection } from '../utils/db'
 
 export default defineNitroPlugin(async () => {
   console.log('[Cengkerik DB Init] Starting database auto-initialization...')
   let connection;
+  const dbName = process.env.DB_NAME || 'cengkerik'
   try {
-    // 1. Get connection without specifying database
-    connection = await getSetupConnection()
-    
-    // 2. Create database if not exists
-    await connection.query('CREATE DATABASE IF NOT EXISTS cengkerik')
-    console.log('[Cengkerik DB Init] Database "cengkerik" verified/created.')
-    
-    // 3. Switch to the database
-    await connection.query('USE cengkerik')
+    // Try connecting directly first (handles remote database case like Wasmer where DB already exists)
+    try {
+      console.log(`[Cengkerik DB Init] Attempting direct connection to database "${dbName}"...`)
+      const dbConfig = {
+        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || '',
+        database: dbName,
+        port: Number(process.env.DB_PORT) || 3306,
+      }
+      connection = await mysql.createConnection(dbConfig)
+      console.log(`[Cengkerik DB Init] Successfully connected to existing database "${dbName}".`)
+    } catch (connError: any) {
+      // If error is "Unknown database", try to create it (handles local XAMPP case)
+      if (connError.errno === 1049 || connError.code === 'ER_BAD_DB_ERROR') {
+        console.log(`[Cengkerik DB Init] Database "${dbName}" does not exist. Attempting to create it...`)
+        connection = await getSetupConnection()
+        await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``)
+        await connection.query(`USE \`${dbName}\``)
+        console.log(`[Cengkerik DB Init] Created and switched to database "${dbName}".`)
+      } else {
+        throw connError
+      }
+    }
     
     // 4. Create projects table
     await connection.query(`
