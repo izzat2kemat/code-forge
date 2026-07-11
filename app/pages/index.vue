@@ -12,13 +12,48 @@ useSeoMeta({
   twitterCard: 'summary_large_image'
 })
 
-// Static data (embedded at build time – works on Wasmer and all static hosts)
+// Database variables with static fallback
 const projects = ref(staticProjects)
-const articles = ref(staticArticles)
+const articles = ref([])
 
-// No DB error on static deployment
 const isDbError = ref(false)
 const dbErrorMessage = ref('')
+
+onMounted(async () => {
+  // Fetch articles from database
+  try {
+    const res = await $fetch('/api/articles')
+    if (res && res.success && res.data) {
+      articles.value = res.data
+    } else {
+      console.warn('API returned success: false or empty data for articles. Using fallback static data.')
+      articles.value = staticArticles
+    }
+  } catch (err) {
+    // 404 = static deployment (no Node server), silently use fallback
+    // Any other error = genuine DB/server problem, show warning
+    const status = err?.response?.status || err?.statusCode
+    if (status === 404) {
+      console.info('API not available (static deployment). Using embedded static data.')
+      articles.value = staticArticles
+    } else {
+      console.error('Failed to load dynamic articles from database:', err)
+      articles.value = staticArticles
+      isDbError.value = true
+      dbErrorMessage.value = err.message || 'Connection failed'
+    }
+  }
+
+  // Fetch projects from database
+  try {
+    const res = await $fetch('/api/projects')
+    if (res && res.success && res.data) {
+      projects.value = res.data
+    }
+  } catch (err) {
+    // Gracefully use static projects (works on static deployment too)
+  }
+})
 
 // Smooth scrolling helpers
 const scrollToSection = (id) => {
@@ -46,6 +81,7 @@ const scrollToSection = (id) => {
           <li><a href="#projects" class="nav-link" @click.prevent="scrollToSection('projects')">Projects</a></li>
           <li><a href="#articles" class="nav-link" @click.prevent="scrollToSection('articles')">Articles</a></li>
           <li><a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact')">Contact</a></li>
+          <li><NuxtLink to="/admin" class="nav-link admin-link">Admin Dashboard</NuxtLink></li>
           <li><a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="nav-link wasmer-link">Wasmer</a></li>
         </ul>
       </div>
@@ -162,11 +198,14 @@ const scrollToSection = (id) => {
 
       <!-- Contact/Newsletter Section -->
       <section id="contact" class="glass-card contact-section">
+        <div class="contact-avatar-wrapper">
+          <img src="/izzat.jpg" alt="Izzat" class="contact-avatar" />
+        </div>
         <div class="contact-content">
           <h2>Let's Collaborate</h2>
           <p>Interested in deploying state-of-the-art AI systems or local model solutions? Get in touch to discuss consulting opportunities or custom integrations.</p>
           <div class="contact-details">
-            <a href="mailto:izzat@cengkerik.ai" class="contact-email">izzat@cengkerik.ai</a>
+            <a href="mailto:izzat2kemat@gmail.com" class="contact-email">izzat2kemat@gmail.com</a>
             <div style="margin-top: 16px;">
               <a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="contact-link-wasmer">Find me on Wasmer ↗</a>
             </div>
@@ -245,6 +284,28 @@ const scrollToSection = (id) => {
   margin: 0 auto;
 }
 
+.contact-avatar-wrapper {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+  transition: var(--transition-smooth);
+}
+
+.contact-avatar:hover {
+  transform: scale(1.05);
+  border-color: var(--secondary);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.35);
+}
+
 .contact-section:hover {
   border-color: rgba(139, 92, 246, 0.35);
   box-shadow: var(--violet-glow);
@@ -321,5 +382,19 @@ const scrollToSection = (id) => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.admin-link {
+  color: var(--primary) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: var(--transition-smooth);
+}
+
+.admin-link:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: var(--primary) !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 </style>
