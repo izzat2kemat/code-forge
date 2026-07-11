@@ -30,10 +30,18 @@ onMounted(async () => {
       articles.value = staticArticles
     }
   } catch (err) {
-    console.error('Failed to load dynamic articles from database:', err)
-    articles.value = staticArticles
-    isDbError.value = true
-    dbErrorMessage.value = err.message || 'Connection failed'
+    // 404 = static deployment (no Node server), silently use fallback
+    // Any other error = genuine DB/server problem, show warning
+    const status = err?.response?.status || err?.statusCode
+    if (status === 404) {
+      console.info('API not available (static deployment). Using embedded static data.')
+      articles.value = staticArticles
+    } else {
+      console.error('Failed to load dynamic articles from database:', err)
+      articles.value = staticArticles
+      isDbError.value = true
+      dbErrorMessage.value = err.message || 'Connection failed'
+    }
   }
 
   // Fetch projects from database
@@ -43,7 +51,7 @@ onMounted(async () => {
       projects.value = res.data
     }
   } catch (err) {
-    // Gracefully use static projects
+    // Gracefully use static projects (works on static deployment too)
   }
 })
 
