@@ -190,11 +190,14 @@ const scrollToSection = (id) => {
 
       <!-- Contact/Newsletter Section -->
       <section id="contact" class="glass-card contact-section">
+        <div class="contact-avatar-wrapper">
+          <img src="/izzat.jpg" alt="Izzat" class="contact-avatar" />
+        </div>
         <div class="contact-content">
           <h2>Let's Collaborate</h2>
           <p>Interested in deploying state-of-the-art AI systems or local model solutions? Get in touch to discuss consulting opportunities or custom integrations.</p>
           <div class="contact-details">
-            <a href="mailto:izzat@cengkerik.ai" class="contact-email">izzat@cengkerik.ai</a>
+            <a href="mailto:izzat2kemat@gmail.com" class="contact-email">izzat2kemat@gmail.com</a>
             <div style="margin-top: 16px;">
               <a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="contact-link-wasmer">Find me on Wasmer ↗</a>
             </div>
@@ -271,6 +274,28 @@ const scrollToSection = (id) => {
   border-color: rgba(139, 92, 246, 0.15);
   max-width: 800px;
   margin: 0 auto;
+}
+
+.contact-avatar-wrapper {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+  transition: var(--transition-smooth);
+}
+
+.contact-avatar:hover {
+  transform: scale(1.05);
+  border-color: var(--secondary);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.35);
 }
 
 .contact-section:hover {
