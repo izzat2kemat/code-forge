@@ -32,6 +32,9 @@ const scrollToSection = (id) => {
 
 <template>
   <div class="cengkerik-app">
+    <!-- Interactive Background Particles -->
+    <StarfieldCanvas />
+
     <!-- Sticky Glassmorphic Navbar -->
     <nav class="navbar">
       <div class="container nav-wrapper">
