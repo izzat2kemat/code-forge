@@ -206,7 +206,11 @@ const scrollToSection = (id) => {
           <p>Interested in deploying state-of-the-art AI systems or local model solutions? Get in touch to discuss consulting opportunities or custom integrations.</p>
           <div class="contact-details">
             <a href="mailto:izzat2kemat@gmail.com" class="contact-email">izzat2kemat@gmail.com</a>
-            <div style="margin-top: 16px;">
+            <div class="contact-social-links">
+              <a href="https://www.linkedin.com/in/mohd-izzat-mohd-nor-346172158" target="_blank" rel="noopener" class="contact-link-linkedin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                LinkedIn ↗
+              </a>
               <a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="contact-link-wasmer">Find me on Wasmer ↗</a>
             </div>
           </div>
@@ -344,6 +348,35 @@ const scrollToSection = (id) => {
 
 .wasmer-link:hover {
   text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.contact-social-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.contact-link-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0a66c2;
+  font-weight: 600;
+  font-size: 16px;
+  transition: var(--transition-smooth);
+  background: rgba(10, 102, 194, 0.08);
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(10, 102, 194, 0.2);
+}
+
+.contact-link-linkedin:hover {
+  background: rgba(10, 102, 194, 0.15);
+  border-color: #0a66c2;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(10, 102, 194, 0.25);
 }
 
 .contact-link-wasmer {
