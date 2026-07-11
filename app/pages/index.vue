@@ -81,7 +81,6 @@ const scrollToSection = (id) => {
           <li><a href="#projects" class="nav-link" @click.prevent="scrollToSection('projects')">Projects</a></li>
           <li><a href="#articles" class="nav-link" @click.prevent="scrollToSection('articles')">Articles</a></li>
           <li><a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact')">Contact</a></li>
-          <li><NuxtLink to="/admin" class="nav-link admin-link">Admin Dashboard</NuxtLink></li>
           <li><a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="nav-link wasmer-link">Wasmer</a></li>
         </ul>
       </div>
@@ -417,17 +416,4 @@ const scrollToSection = (id) => {
   to { transform: rotate(360deg); }
 }
 
-.admin-link {
-  color: var(--primary) !important;
-  border: 1px solid rgba(16, 185, 129, 0.3) !important;
-  padding: 4px 10px;
-  border-radius: 6px;
-  transition: var(--transition-smooth);
-}
-
-.admin-link:hover {
-  background: rgba(16, 185, 129, 0.1) !important;
-  border-color: var(--primary) !important;
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-}
 </style>

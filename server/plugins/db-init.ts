@@ -1,6 +1,5 @@
 import mysql from 'mysql2/promise'
 import { getSetupConnection } from '../utils/db'
-import crypto from 'crypto'
 
 export default defineNitroPlugin(async () => {
   console.log('[Cengkerik DB Init] Starting database auto-initialization...')
@@ -61,52 +60,6 @@ export default defineNitroPlugin(async () => {
       )
     `)
     console.log('[Cengkerik DB Init] "articles" table verified/created.')
-
-    // 5b. Create users table
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(100) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        role VARCHAR(50) NOT NULL DEFAULT 'editor',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    `)
-    console.log('[Cengkerik DB Init] "users" table verified/created.')
-
-    // 5c. Create sessions table
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS sessions (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        token VARCHAR(255) NOT NULL UNIQUE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    `)
-    console.log('[Cengkerik DB Init] "sessions" table verified/created.')
-
-    // Seed default admin and editor if empty
-    const [userRows] = await connection.query('SELECT COUNT(*) as count FROM users')
-    if ((userRows as any)[0].count === 0) {
-      console.log('[Cengkerik DB Init] Seeding default users...')
-      const hashPassword = (password: string) => {
-        const salt = 'cengkerik_salt_2026'
-        return crypto.createHmac('sha256', salt).update(password).digest('hex')
-      }
-      const adminPasswordHash = hashPassword('admin123')
-      const editorPasswordHash = hashPassword('editor123')
-
-      await connection.query(
-        'INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)',
-        ['admin', adminPasswordHash, 'admin']
-      )
-      await connection.query(
-        'INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)',
-        ['editor', editorPasswordHash, 'editor']
-      )
-      console.log('[Cengkerik DB Init] Default users seeded successfully.')
-    }
 
     // 6. Seed projects if empty
     const [projectRows] = await connection.query('SELECT COUNT(*) as count FROM projects')
