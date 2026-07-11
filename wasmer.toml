@@ -1,0 +1,10 @@
+[package]
+name = "izzat2kemat/code-forge"
+version = "0.1.0"
+description = "Cengkerik Portfolio"
+
+[dependencies]
+"wasmer/static-web-server" = "^1"
+
+[fs]
+public = ".output/public"
