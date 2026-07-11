@@ -12,13 +12,40 @@ useSeoMeta({
   twitterCard: 'summary_large_image'
 })
 
-// Static data (embedded at build time – works on Wasmer and all static hosts)
+// Database variables with static fallback
 const projects = ref(staticProjects)
-const articles = ref(staticArticles)
+const articles = ref([])
 
-// No DB error on static deployment
 const isDbError = ref(false)
 const dbErrorMessage = ref('')
+
+onMounted(async () => {
+  // Fetch articles from database
+  try {
+    const res = await $fetch('/api/articles')
+    if (res && res.success && res.data) {
+      articles.value = res.data
+    } else {
+      console.warn('API returned success: false or empty data for articles. Using fallback static data.')
+      articles.value = staticArticles
+    }
+  } catch (err) {
+    console.error('Failed to load dynamic articles from database:', err)
+    articles.value = staticArticles
+    isDbError.value = true
+    dbErrorMessage.value = err.message || 'Connection failed'
+  }
+
+  // Fetch projects from database
+  try {
+    const res = await $fetch('/api/projects')
+    if (res && res.success && res.data) {
+      projects.value = res.data
+    }
+  } catch (err) {
+    // Gracefully use static projects
+  }
+})
 
 // Smooth scrolling helpers
 const scrollToSection = (id) => {
@@ -46,6 +73,7 @@ const scrollToSection = (id) => {
           <li><a href="#projects" class="nav-link" @click.prevent="scrollToSection('projects')">Projects</a></li>
           <li><a href="#articles" class="nav-link" @click.prevent="scrollToSection('articles')">Articles</a></li>
           <li><a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact')">Contact</a></li>
+          <li><NuxtLink to="/admin" class="nav-link admin-link">Admin Dashboard</NuxtLink></li>
           <li><a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="nav-link wasmer-link">Wasmer</a></li>
         </ul>
       </div>
@@ -321,5 +349,19 @@ const scrollToSection = (id) => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.admin-link {
+  color: var(--primary) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: var(--transition-smooth);
+}
+
+.admin-link:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: var(--primary) !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 </style>
