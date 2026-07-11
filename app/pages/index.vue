@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import staticProjects from '~/data/projects.json'
+import staticArticles from '~/data/articles.json'
 
 // Set SEO Meta
 useSeoMeta({
@@ -11,29 +12,13 @@ useSeoMeta({
   twitterCard: 'summary_large_image'
 })
 
-// Fetch Projects & Articles from API
-const { data: projectsData, error: projectsError } = await useFetch('/api/projects')
-const { data: articlesData, error: articlesError } = await useFetch('/api/articles')
+// Static data (embedded at build time – works on Wasmer and all static hosts)
+const projects = ref(staticProjects)
+const articles = ref(staticArticles)
 
-// Derived States
-const projects = computed(() => projectsData.value?.success ? projectsData.value.data : [])
-const articles = computed(() => articlesData.value?.success ? articlesData.value.data : [])
-
-// DB Connection Check
-const isDbError = computed(() => {
-  return (projectsData.value && !projectsData.value.success) || 
-         (articlesData.value && !articlesData.value.success) || 
-         projectsError.value || 
-         articlesError.value
-})
-
-const dbErrorMessage = computed(() => {
-  if (projectsData.value && !projectsData.value.success) return projectsData.value.error
-  if (articlesData.value && !articlesData.value.success) return articlesData.value.error
-  if (projectsError.value) return projectsError.value.message
-  if (articlesError.value) return articlesError.value.message
-  return 'Unable to establish database connection.'
-})
+// No DB error on static deployment
+const isDbError = ref(false)
+const dbErrorMessage = ref('')
 
 // Smooth scrolling helpers
 const scrollToSection = (id) => {
@@ -43,6 +28,7 @@ const scrollToSection = (id) => {
   }
 }
 </script>
+
 
 <template>
   <div class="cengkerik-app">
@@ -103,10 +89,8 @@ const scrollToSection = (id) => {
           <div class="stat-label">Tech Articles</div>
         </div>
         <div class="stat-item">
-          <div class="stat-val" :style="{ color: isDbError ? '#ef4444' : '#10b981' }">
-            {{ isDbError ? 'Offline' : 'Online' }}
-          </div>
-          <div class="stat-label">MySQL DB</div>
+          <div class="stat-val">2024+</div>
+          <div class="stat-label">Active Since</div>
         </div>
       </div>
 
@@ -117,14 +101,9 @@ const scrollToSection = (id) => {
         <h2 class="section-title">Portfolio Projects</h2>
         <p class="section-subtitle">A curated collection of my research implementations and AI applications.</p>
         
-        <!-- Loading State -->
-        <div v-if="!projectsData && !projectsError" class="loading-state">
-          <span class="spinner"></span> Loading projects...
-        </div>
-
         <!-- Empty State -->
-        <div v-else-if="projects.length === 0" class="empty-state glass-card">
-          <p>No projects found in the database. Ensure database setup and seed executed successfully.</p>
+        <div v-if="projects.length === 0" class="empty-state glass-card">
+          <p>No projects available at this time.</p>
         </div>
 
         <!-- Projects Grid -->
@@ -157,14 +136,9 @@ const scrollToSection = (id) => {
         <h2 class="section-title">AI Articles & Logs</h2>
         <p class="section-subtitle">Technical deep-dives into agentic orchestration, fine-tuning methodologies, and WebGPU optimization.</p>
         
-        <!-- Loading State -->
-        <div v-if="!articlesData && !articlesError" class="loading-state">
-          <span class="spinner"></span> Loading articles...
-        </div>
-
         <!-- Empty State -->
-        <div v-else-if="articles.length === 0" class="empty-state glass-card">
-          <p>No articles found in the database.</p>
+        <div v-if="articles.length === 0" class="empty-state glass-card">
+          <p>No articles available at this time.</p>
         </div>
 
         <!-- Articles Grid -->

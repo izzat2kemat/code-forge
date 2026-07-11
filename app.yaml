@@ -1,0 +1,16 @@
+kind: wasmer.io/App.v0
+name: code-forge
+owner: izzat2kemat
+package: wasmer/static-web-server
+
+# Serve the Nuxt static output from the .output/public directory
+volumes:
+  - name: static-content
+    mount: /app
+    package: .
+
+cli_args:
+  - --root=/app/.output/public
+  - --port=8080
+  - --index-files=index.html
+  - --fallback-page=index.html

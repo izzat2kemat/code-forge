@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "NeuroForge: Autonomous AI Agents Framework",
+    "description": "A cutting-edge orchestrator for deploying collaborative multi-agent AI networks. It utilizes semantic routing, local memory caching, and self-healing terminal executors to write, test, and refactor code autonomously.",
+    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    "github_url": "https://github.com/izzat2kemat/neuroforge",
+    "demo_url": "https://neuroforge.cengkerik.ai",
+    "tags": "AI Agents,LLMs,TypeScript,LangChain"
+  },
+  {
+    "id": 2,
+    "title": "LexiChat: Privacy-First Local RAG Client",
+    "description": "An enterprise-grade document search assistant that operates entirely client-side or on private servers. Implements Vector search, hybrid BM25 lexical search, and high-performance WebGPU model execution.",
+    "image_url": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+    "github_url": "https://github.com/izzat2kemat/lexichat",
+    "demo_url": "https://lexichat.cengkerik.ai",
+    "tags": "RAG,Vector DB,WebGPU,Nuxt 3"
+  },
+  {
+    "id": 3,
+    "title": "Cengkerik-Vision: Edge Insect Detection",
+    "description": "An IoT vision pipeline optimized for Raspberry Pi and Jetson Nano, leveraging quantized YOLOv8 models to monitor and classify nocturnal insect activities with low latency and power consumption.",
+    "image_url": "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80",
+    "github_url": "https://github.com/izzat2kemat/cengkerik-vision",
+    "demo_url": null,
+    "tags": "Computer Vision,YOLOv8,Python,IoT"
+  }
+]

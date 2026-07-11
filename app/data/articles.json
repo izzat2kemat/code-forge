@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "The Rise of Agentic Coding: Beyond CoPilot",
+    "summary": "Explore how software engineering is transforming with autonomous AI agents that don't just autocomplete lines, but plan complex tasks, execute commands, run tests, and refactor files.",
+    "content": "Artificial Intelligence has rapidly moved from simple syntax helpers to full agentic workflows.",
+    "image_url": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=800&q=80",
+    "read_time": "5 min read",
+    "category": "Agentic AI"
+  },
+  {
+    "id": 2,
+    "title": "Fine-Tuning vs RAG: Choosing Your LLM Strategy",
+    "summary": "Should you fine-tune a model on your data or feed it dynamically through Retrieval-Augmented Generation? A deep dive into cost, performance, and complexity.",
+    "content": "Deciding between Fine-Tuning and Retrieval-Augmented Generation (RAG) is a critical technical choice for modern AI applications.",
+    "image_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
+    "read_time": "8 min read",
+    "category": "Architecture"
+  },
+  {
+    "id": 3,
+    "title": "Optimizing Small Language Models for WebGPU",
+    "summary": "Running 3B and 7B models inside the user's browser is now a reality. Learn how WebGPU and ONNX Runtime enable private, instant AI inference on web apps.",
+    "content": "With the arrival of powerful small language models (SLMs) like Phi-3 and Llama-3-8B, client-side inference is taking off.",
+    "image_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+    "read_time": "6 min read",
+    "category": "WebGPU"
+  }
+]
