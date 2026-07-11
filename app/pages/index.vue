@@ -57,6 +57,7 @@ const scrollToSection = (id) => {
           <li><a href="#projects" class="nav-link" @click.prevent="scrollToSection('projects')">Projects</a></li>
           <li><a href="#articles" class="nav-link" @click.prevent="scrollToSection('articles')">Articles</a></li>
           <li><a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact')">Contact</a></li>
+          <li><a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="nav-link wasmer-link">Wasmer</a></li>
         </ul>
       </div>
     </nav>
@@ -189,6 +190,9 @@ const scrollToSection = (id) => {
           <p>Interested in deploying state-of-the-art AI systems or local model solutions? Get in touch to discuss consulting opportunities or custom integrations.</p>
           <div class="contact-details">
             <a href="mailto:izzat@cengkerik.ai" class="contact-email">izzat@cengkerik.ai</a>
+            <div style="margin-top: 16px;">
+              <a href="https://wasmer.io/izzat2kemat" target="_blank" rel="noopener" class="contact-link-wasmer">Find me on Wasmer ↗</a>
+            </div>
           </div>
         </div>
       </section>
@@ -294,6 +298,29 @@ const scrollToSection = (id) => {
 .contact-email:hover {
   color: var(--accent);
   text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+.wasmer-link {
+  color: var(--secondary) !important;
+}
+
+.wasmer-link:hover {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.contact-link-wasmer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+  font-weight: 600;
+  font-size: 16px;
+  transition: var(--transition-smooth);
+}
+
+.contact-link-wasmer:hover {
+  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
 }
 
 /* Loading / Empty state */
